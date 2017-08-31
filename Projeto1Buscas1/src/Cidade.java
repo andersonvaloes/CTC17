@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 public class Cidade {
 	int id, dest;
+	int prev;
+	Cidade destination;
 	double x, y;
 	ArrayList<Cidade> colecao = new ArrayList<Cidade>();
 	boolean visited  = false;

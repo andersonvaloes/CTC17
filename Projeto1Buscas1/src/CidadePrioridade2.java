@@ -1,6 +1,6 @@
 import java.util.Comparator;
 
-public class CidadePrioriada2 implements Comparator<Cidade> {
+public class CidadePrioridade2 implements Comparator<Cidade> {
 
 	@Override
 	public int compare(Cidade o1, Cidade o2) {
