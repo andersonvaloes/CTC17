@@ -115,7 +115,7 @@ public class ConjuntoCidades {
 	
 	public static void main(String[] args) throws IOException {
 		ConjuntoCidades cc = new ConjuntoCidades();
-		FileReader r = new FileReader("/home/spider/git/CTC17/Projeto1Buscas1/src/entrada");
+		FileReader r = new FileReader("/home/spider/eclipse/workspace/CTC17/Projeto1Buscas1/src/entrada");
 	    BufferedReader br = new BufferedReader(r);
 	    String line;
 	    String[] parts1, parts2;
@@ -129,7 +129,7 @@ public class ConjuntoCidades {
 	    			Double.parseDouble(parts2[2])));
 	    }
 		br.close();
-	    r = new FileReader("/home/spider/git/CTC17/Projeto1Buscas1/src/entrada");
+	    r = new FileReader("/home/spider/eclipse/workspace/CTC17/Projeto1Buscas1/src/entrada");
 	    br = new BufferedReader(r);
 	    while((line = br.readLine()) != null) {
 	    	parts1 = line.split(" ");
