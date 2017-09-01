@@ -2,13 +2,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.PriorityQueue;
 
 public class ConjuntoCidades {
 	ArrayList<Cidade> colecao;
 	PriorityQueue<Cidade> pQC = new PriorityQueue<Cidade>(734, new CidadePrioridade1());
-	
+	PriorityQueue<Cidade> pQC2 = new PriorityQueue<Cidade>(734, new CidadePrioridade2());
+
 	public ConjuntoCidades() {
 		colecao = new ArrayList<Cidade>();
 	}
@@ -48,36 +48,6 @@ public class ConjuntoCidades {
 	}
 	
 	public Resultado greedyBusca(Cidade c, Cidade dest) {
-		Resultado r = new Resultado();
-		Resultado raux = new Resultado();
-		
-		if(c.id == dest.id) {
-			r.caminho =  ""+ c.id;
-			r.distancia = 0;
-			r.encontrou = true;
-			return r;
-		}
-		
-		if(c.visited) {
-			return r;
-		}
-		
-		c.visited = true;
-		
-		int i, j = 0;
-		
-		for(i = 0; i < c.colecao.size(); i++) {
-			raux = greedyBusca(c.colecao.get(i), dest);
-			j = i;
-			if(raux.encontrou) break;
-		}
-		r.caminho =  c.id + "=>" + raux.caminho;
-		r.distancia = raux.distancia + c.distancia(c.colecao.get(j));
-		r.encontrou = raux.encontrou;
-		return r;
-	}
-	
-	public Resultado greedyBusca2(Cidade c, Cidade dest) {
 		c.prev = 0;
 		c.visited = true;
 		Cidade cidade = null;
@@ -85,18 +55,11 @@ public class ConjuntoCidades {
 		r.caminho = "";
 		r.distancia = 0;
 		pQC.add(c);
-//		if(c.id == dest.id) {
-//			r.caminho = " " + c.id;
-//			r.encontrou = true;
-//			r.distancia = 0;
-//			return r;
-//		}
+
 		
 		while(!pQC.isEmpty()) {
 			cidade = pQC.poll();
 			if(cidade.id == dest.id) break;
-			//System.out.println(cidade.id);
-			//System.out.println(dest.id);
 			for(int i = 0; i < cidade.colecao.size(); i++){
 				if(!cidade.colecao.get(i).visited){
 					cidade.colecao.get(i).visited = true;
@@ -116,34 +79,39 @@ public class ConjuntoCidades {
 	}
 	
 	public Resultado aEstrela(Cidade c, Cidade dest) {
-		Resultado r = new Resultado();
-		Resultado raux = new Resultado();
-		
-		if(c.id == dest.id) {
-			r.caminho =  ""+ c.id;
-			r.distancia = 0;
-			r.encontrou = true;
-			return r;
-		}
-		
-		if(c.visited) {
-			return r;
-		}
-		
+		c.prev = 0;
 		c.visited = true;
+		c.curDist = 0;
+		Cidade cidade = null;
+		Resultado r = new Resultado();
+		r.caminho = "";
+		r.distancia = 0;
+		pQC2.add(c);
 		
-		int i, j = 0;
-		
-		for(i = 0; i < c.colecao.size(); i++) {
-			raux = greedyBusca(c.colecao.get(i), dest);
-			j = i;
-			if(raux.encontrou) break;
+		while(!pQC2.isEmpty()){
+			cidade = pQC2.poll();
+			if(cidade.id == dest.id) break;
+			for(int i = 0; i < cidade.colecao.size(); i++){
+				if(!cidade.colecao.get(i).visited || 
+						cidade.curDist + cidade.colecao.get(i).distancia(cidade) < cidade.colecao.get(i).curDist){
+					cidade.colecao.get(i).visited = true;
+					cidade.colecao.get(i).prev = cidade.id;
+					cidade.colecao.get(i).curDist = cidade.curDist + cidade.colecao.get(i).distancia(cidade);
+					pQC2.add(cidade.colecao.get(i));
+				}
+			}
 		}
-		r.caminho =  c.id + "=>" + raux.caminho;
-		r.distancia = raux.distancia + c.distancia(c.colecao.get(j));
-		r.encontrou = raux.encontrou;
+		cidade = colecao.get(600-1);
+		while(cidade.prev != 0) {
+			r.caminho = cidade.id + "=>" + r.caminho;
+			r.distancia = r.distancia + cidade.distancia(colecao.get(cidade.prev-1));
+			cidade = colecao.get(cidade.prev-1);
+		}
+		r.caminho = cidade.id + "=>" + r.caminho;
 		return r;
 	}
+	
+	
 	
 	public static void main(String[] args) throws IOException {
 		ConjuntoCidades cc = new ConjuntoCidades();
@@ -173,22 +141,26 @@ public class ConjuntoCidades {
 	    	}
 	    }
 	    
+	    
+	    br.close();
+	    
 	    for(int i = 0; i < cc.colecao.size(); i++) {
 	    	cc.colecao.get(i).visited = false;
 	    	cc.colecao.get(i).destination = cc.colecao.get(600-1);
 	    }
 	    
-	    //cc.printAllId();
-	    //Resultado res = new Resultado();
-	    //res = cc.greedyBusca(cc.colecao.get(203-1), cc.colecao.get(600-1));
-	    //System.out.println(res.caminho + "  "+ res.distancia);
-	    //System.out.println(res.distancia);
+	    Resultado res = new Resultado();
+	    res = cc.greedyBusca(cc.colecao.get(203-1), cc.colecao.get(600-1));
+	    System.out.println(res.caminho + "  "+ res.distancia);
+	    System.out.println(res.distancia);
 	    
-	    Resultado res2 = new Resultado();
-	    res2 = cc.greedyBusca2(cc.colecao.get(203-1), cc.colecao.get(600-1));
-	    System.out.println(res2.caminho + "  "+ res2.distancia);
-	    System.out.println(res2.distancia);
-	    br.close();
+	    for(int i = 0; i < cc.colecao.size(); i++) {
+	    	cc.colecao.get(i).visited = false;
+	    	cc.colecao.get(i).destination = cc.colecao.get(600-1);
+	    }
+	    res = cc.aEstrela(cc.colecao.get(203-1), cc.colecao.get(600-1));
+	    System.out.println(res.caminho + "  "+ res.distancia);
+	    System.out.println(res.distancia);
+	    
 	}
-	
 }

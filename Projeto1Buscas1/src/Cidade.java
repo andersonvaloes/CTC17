@@ -4,7 +4,7 @@ public class Cidade {
 	int id, dest;
 	int prev;
 	Cidade destination;
-	double x, y;
+	double x, y, curDist = 0;
 	ArrayList<Cidade> colecao = new ArrayList<Cidade>();
 	boolean visited  = false;
 	
