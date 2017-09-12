@@ -1,0 +1,6 @@
+
+public class NRainhas {
+	public final int N = 10;
+	int[] vet = new int[N];
+	
+}
