@@ -1,3 +1,4 @@
+package trabalho;
 import java.util.Random;
 
 public class NRainhas {
