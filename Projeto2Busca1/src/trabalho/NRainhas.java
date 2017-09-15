@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class NRainhas {
 	
-	public final int N = 5;
+	public final int N = 10;
 	int[][] vet;
 	int[][] pesos;
 	
@@ -79,6 +79,15 @@ public class NRainhas {
 			}
 			System.out.println();
 		}
+		System.out.println();
+		
+		for(int i = 0; i < this.N; i++) {
+			for(int j = 0; j < this.N; j++) {
+				System.out.print(this.pesos[i][j] + " ");	
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 	
 	public void montarPesos(){
@@ -101,15 +110,71 @@ public class NRainhas {
 				this.pesos[i][j] = this.pesoHeuristica(vetaux);
 				vetaux[i][j] = 0;
 			}
-			vetaux[i][k] = 0;
+			vetaux[i][k] = -1;
 		}
+	}
+	
+	public boolean terminou() {
+		return this.pesoHeuristica(this.vet) == 0;
+	}
+	
+	public int minPeso() {
+		int min = this.N*this.N;
+		for(int i = 0; i < this.N;i++) {
+			for(int j = 0; j < this.N; j++) {
+				if(this.pesos[i][j] < min) {
+					min = this.pesos[i][j];
+				}
+			}
+		}
+		return min;
+	}
+	
+	public void hillClimbing() {
+		Random r = new Random();
+		int i = 0, j = 0, min, rand;
+		boolean achou = false;
+		this.eraseAll();
+		this.generateRandomBoard();
+		this.montarPesos();
+		while(!terminou()) {
+			min = minPeso();
+			while(min == pesoHeuristica(this.vet)) {
+				System.out.println("enttou");
+				this.eraseAll();
+				this.generateRandomBoard();
+				this.montarPesos();
+				this.printBoard();
+				min = minPeso();
+			}
+			achou = false;
+			while(!achou) {
+				rand = r.nextInt(this.N);
+				for(i = 0; i < this.N; i++) {
+					if(this.pesos[rand][i] == min) {
+						achou = true;
+						j = i;
+						for(i = 0; i < this.N; i++) {
+							this.vet[rand][i] = 0;
+						}
+						this.vet[rand][j] = -1;
+					}
+				}
+				
+			}
+			this.montarPesos();
+			this.printBoard();
+		}
+		this.printBoard();
 	}
 	
 	public static void main(String[] args) {
 		NRainhas nr = new NRainhas();
 		nr.eraseAll();
 		nr.generateRandomBoard();
-		nr.printBoard();
+		nr.montarPesos();
+		//nr.printBoard();
+		nr.hillClimbing();
 		System.out.println(nr.pesoHeuristica(nr.vet));
 	}
 	
