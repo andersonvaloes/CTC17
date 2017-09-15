@@ -168,6 +168,7 @@ public class NRainhas {
 		this.printBoard();
 	}
 	
+	
 	public static void main(String[] args) {
 		NRainhas nr = new NRainhas();
 		nr.eraseAll();
