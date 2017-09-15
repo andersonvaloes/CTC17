@@ -5,16 +5,16 @@ import java.util.Random;
 public class MaxGlobal {
 	public double functionMax(double x, double y) {
 		return 4*Math.exp(-(x*x+y*y)) 
-				+ Math.exp(-((x-5)*(x-5)+(y-5)*(y-5)))
-				+ Math.exp(-((x+5)*(x+5)+(y-5)*(y-5)))
-				+ Math.exp(-((x-5)*(x-5)+(y+5)*(y+5)))
-				+ Math.exp(-((x+5)*(x+5)+(y+5)*(y+5)));
+				+ Math.exp(-((x-5.0)*(x-5.0)+(y-5.0)*(y-5.0)))
+				+ Math.exp(-((x+5.0)*(x+5.0)+(y-5.0)*(y-5.0)))
+				+ Math.exp(-((x-5.0)*(x-5.0)+(y+5.0)*(y+5.0)))
+				+ Math.exp(-((x+5.0)*(x+5.0)+(y+5.0)*(y+5.0)));
 	}
 	
 	public static void main(String[] args) {
 		MaxGlobal m = new MaxGlobal();
 		Random g = new Random();
-		double d = 0.001;
+		double d = 0.01;
 		double T = 1;
 		double val = 0;
 		double i = 10, j = 20, ia, ja;
@@ -40,12 +40,12 @@ public class MaxGlobal {
 			System.out.println("i j ia ja: " + i + " " + j +" " + ia +" " + ja);
 			next = m.functionMax(i, j);
 			dif = m.functionMax(i, j) - m.functionMax(ia, ja);
-			System.out.println(m.functionMax(i, j) + " " + dif);
+			System.out.println(m.functionMax(i, j) + "  "+ m.functionMax(ia, ja)+ "  "+ "diferenca " + dif);
 			if(dif > 0) {
 				cur = next;
 			}else {
 				System.out.println(Math.exp(dif/T));
-				if(g.nextDouble() < Math.exp(dif/T)) {
+				if(g.nextDouble() > Math.exp(dif/T)) {
 					cur = next;
 				}else {
 					i = ia;
