@@ -174,7 +174,6 @@ public class NRainhas {
 		nr.eraseAll();
 		nr.generateRandomBoard();
 		nr.montarPesos();
-		//nr.printBoard();
 		nr.hillClimbing();
 		System.out.println(nr.pesoHeuristica(nr.vet));
 	}
