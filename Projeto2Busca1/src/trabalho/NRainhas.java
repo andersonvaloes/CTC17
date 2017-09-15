@@ -20,10 +20,7 @@ public class NRainhas {
 			}
 			p = p + q*(q-1)/2;
 			q = 0;
-		}
-		//System.out.println(p + "Coluna");
-		
-		
+		}		
 		for(int i = 0; i < this.N; i++) {//Diagonal \ inferior
 			for(int j = 0; i + j < this.N; j++) {
 				if(v[i+j][j] == -1) q++;
@@ -31,26 +28,20 @@ public class NRainhas {
 			p = p + q*(q-1)/2;
 			q = 0;
 		}
-		//System.out.println(p + "Diagonal \\ inferior");
-		
 		for(int j = 1; j < this.N; j++) {//Diagonal \ superior
 			for(int i = 0; i + j < this.N; i++) {
 				if(v[i][i+j] == -1) q++;
 			}
 			p = p + q*(q-1)/2;
 			q = 0;
-		}
-		//System.out.println(p + "Diagonal \\ superior");
-		
+		}	
 		for(int i = 0; i < this.N; i++) {//Diagonal / superior
 			for(int j = 0; i >= j; j++) {
 				if(v[i-j][j] == -1) q++;
 			}
 			p = p + q*(q-1)/2;
 			q = 0;
-		}
-		//System.out.println(p + "Diagonal / superior");
-		
+		}		
 		for(int j = 1; j < this.N; j++) {//Diagonal / inferior
 			for(int i = 0; j + i < this.N; i++) {
 				if(v[this.N - i - 1][j + i] == -1) q++;
@@ -58,7 +49,6 @@ public class NRainhas {
 			p = p + q*(q-1)/2;
 			q = 0;
 		}
-		//System.out.println(p + "Diagonal / inferior");
 		return p;
 	}
 	
@@ -69,7 +59,6 @@ public class NRainhas {
 		int rand;
 		for(int i = 0; i < this.N; i++) {
 			rand = r.nextInt(this.N);
-			//System.out.println(rand);
 			this.vet[i][rand] = -1;
 		}
 	}
@@ -89,6 +78,30 @@ public class NRainhas {
 				else System.out.print(this.vet[i][j] + " ");	
 			}
 			System.out.println();
+		}
+	}
+	
+	public void montarPesos(){
+		int[][] vetaux = new int[this.N][this.N];
+		int k = 0;
+		for(int i = 0; i < this.N;i++) {
+			for(int j = 0; j < this.N; j++) {
+				vetaux[i][j] = this.vet[i][j];
+			}
+		}
+		for(int i = 0; i < this.N;i++) {
+			for(int j = 0; j < this.N; j++) {
+				if(vetaux[i][j] == -1) {
+					vetaux[i][j] = 0;
+					k = j;
+				}
+			}
+			for(int j = 0; j < this.N; j++) {
+				vetaux[i][j] = -1;
+				this.pesos[i][j] = this.pesoHeuristica(vetaux);
+				vetaux[i][j] = 0;
+			}
+			vetaux[i][k] = 0;
 		}
 	}
 	
